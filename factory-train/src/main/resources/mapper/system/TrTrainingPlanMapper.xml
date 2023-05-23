@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TrTrainingPlanMapper">
+
+    <resultMap type="TrTrainingPlan" id="TrTrainingPlanResult">
+        <result property="id"    column="id"    />
+        <result property="project"    column="project"    />
+        <result property="purpose"    column="purpose"    />
+        <result property="date"    column="date"    />
+        <result property="location"    column="location"    />
+        <result property="trainer"    column="trainer"    />
+        <result property="target"    column="target"    />
+        <result property="assessment"    column="assessment"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTrTrainingPlanVo">
+        select id, project, purpose, date, location, trainer, target, assessment, remark from tr_train_plan
+    </sql>
+
+    <select id="selectTrTrainingPlanList" parameterType="TrTrainingPlan" resultMap="TrTrainingPlanResult">
+        <include refid="selectTrTrainingPlanVo"/>
+        <where>
+            <if test="project != null  and project != ''"> and project = #{project}</if>
+            <if test="purpose != null  and purpose != ''"> and purpose = #{purpose}</if>
+            <if test="date != null "> and date = #{date}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="trainer != null  and trainer != ''"> and trainer = #{trainer}</if>
+            <if test="target != null  and target != ''"> and target = #{target}</if>
+            <if test="assessment != null  and assessment != ''"> and assessment = #{assessment}</if>
+        </where>
+    </select>
+
+    <select id="selectTrTrainingPlanById" parameterType="Long" resultMap="TrTrainingPlanResult">
+        <include refid="selectTrTrainingPlanVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTrTrainingPlan" parameterType="TrTrainingPlan" useGeneratedKeys="true" keyProperty="id">
+        insert into tr_train_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="project != null and project != ''">project,</if>
+            <if test="purpose != null and purpose != ''">purpose,</if>
+            <if test="date != null">date,</if>
+            <if test="location != null and location != ''">location,</if>
+            <if test="trainer != null and trainer != ''">trainer,</if>
+            <if test="target != null and target != ''">target,</if>
+            <if test="assessment != null and assessment != ''">assessment,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="project != null and project != ''">#{project},</if>
+            <if test="purpose != null and purpose != ''">#{purpose},</if>
+            <if test="date != null">#{date},</if>
+            <if test="location != null and location != ''">#{location},</if>
+            <if test="trainer != null and trainer != ''">#{trainer},</if>
+            <if test="target != null and target != ''">#{target},</if>
+            <if test="assessment != null and assessment != ''">#{assessment},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrTrainingPlan" parameterType="TrTrainingPlan">
+        update tr_train_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="project != null and project != ''">project = #{project},</if>
+            <if test="purpose != null and purpose != ''">purpose = #{purpose},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="location != null and location != ''">location = #{location},</if>
+            <if test="trainer != null and trainer != ''">trainer = #{trainer},</if>
+            <if test="target != null and target != ''">target = #{target},</if>
+            <if test="assessment != null and assessment != ''">assessment = #{assessment},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTrTrainingPlanById" parameterType="Long">
+        delete from tr_train_plan where id = #{id}
+    </delete>
+
+    <delete id="deleteTrTrainingPlanByIds" parameterType="String">
+        delete from tr_train_plan where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

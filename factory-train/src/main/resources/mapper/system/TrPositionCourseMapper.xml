@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TrPositionCourseMapper">
+    
+    <resultMap type="TrPositionCourse" id="TrPositionCourseResult">
+        <result property="id"    column="id"    />
+        <result property="postId"    column="post_id"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTrPositionCourseVo">
+        select id, post_id, course_id, create_by, create_time, update_by, update_time, remark from tr_position_course
+    </sql>
+
+    <select id="selectTrPositionCourseList" parameterType="TrPositionCourse" resultMap="TrPositionCourseResult">
+        <include refid="selectTrPositionCourseVo"/>
+        <where>  
+            <if test="postId != null "> and post_id = #{postId}</if>
+            <if test="courseId != null "> and course_id = #{courseId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTrPositionCourseById" parameterType="Long" resultMap="TrPositionCourseResult">
+        <include refid="selectTrPositionCourseVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTrPositionCourse" parameterType="TrPositionCourse" useGeneratedKeys="true" keyProperty="id">
+        insert into tr_position_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="postId != null">post_id,</if>
+            <if test="courseId != null">course_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="postId != null">#{postId},</if>
+            <if test="courseId != null">#{courseId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrPositionCourse" parameterType="TrPositionCourse">
+        update tr_position_course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="courseId != null">course_id = #{courseId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTrPositionCourseById" parameterType="Long">
+        delete from tr_position_course where id = #{id}
+    </delete>
+
+    <delete id="deleteTrPositionCourseByIds" parameterType="String">
+        delete from tr_position_course where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

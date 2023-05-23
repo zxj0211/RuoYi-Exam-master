@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TrCourseMapper">
+    
+    <resultMap type="TrCourse" id="TrCourseResult">
+        <result property="courseId"    column="course_id"    />
+        <result property="courseName"    column="course_name"    />
+        <result property="courseSort"    column="course_sort"    />
+        <result property="courseInfo"    column="course_info"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="courseMaterials"    column="course_materials"    />
+        <result property="courseExercises"    column="course_exercises"    />
+        <result property="coursePapers"    column="course_papers"    />
+    </resultMap>
+
+    <sql id="selectTrCourseVo">
+        select course_id, course_name, course_sort, course_info, status, del_flag, create_by, create_time, update_by, update_time, remark, start_time, end_time, course_materials, course_exercises, course_papers from tr_course
+    </sql>
+
+    <select id="selectTrCourseList" parameterType="TrCourse" resultMap="TrCourseResult">
+        <include refid="selectTrCourseVo"/>
+        <where>  
+            <if test="courseName != null  and courseName != ''"> and course_name like concat('%', #{courseName}, '%')</if>
+            <if test="courseSort != null "> and course_sort = #{courseSort}</if>
+            <if test="courseInfo != null  and courseInfo != ''"> and course_info = #{courseInfo}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="courseMaterials != null  and courseMaterials != ''"> and course_materials = #{courseMaterials}</if>
+            <if test="courseExercises != null  and courseExercises != ''"> and course_exercises = #{courseExercises}</if>
+            <if test="coursePapers != null  and coursePapers != ''"> and course_papers = #{coursePapers}</if>
+        </where>
+    </select>
+    
+    <select id="selectTrCourseByCourseId" parameterType="Long" resultMap="TrCourseResult">
+        <include refid="selectTrCourseVo"/>
+        where course_id = #{courseId}
+    </select>
+        
+    <insert id="insertTrCourse" parameterType="TrCourse" useGeneratedKeys="true" keyProperty="courseId">
+        insert into tr_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseName != null and courseName != ''">course_name,</if>
+            <if test="courseSort != null">course_sort,</if>
+            <if test="courseInfo != null and courseInfo != ''">course_info,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="courseMaterials != null">course_materials,</if>
+            <if test="courseExercises != null">course_exercises,</if>
+            <if test="coursePapers != null">course_papers,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseName != null and courseName != ''">#{courseName},</if>
+            <if test="courseSort != null">#{courseSort},</if>
+            <if test="courseInfo != null and courseInfo != ''">#{courseInfo},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="courseMaterials != null">#{courseMaterials},</if>
+            <if test="courseExercises != null">#{courseExercises},</if>
+            <if test="coursePapers != null">#{coursePapers},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrCourse" parameterType="TrCourse">
+        update tr_course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseName != null and courseName != ''">course_name = #{courseName},</if>
+            <if test="courseSort != null">course_sort = #{courseSort},</if>
+            <if test="courseInfo != null and courseInfo != ''">course_info = #{courseInfo},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="courseMaterials != null">course_materials = #{courseMaterials},</if>
+            <if test="courseExercises != null">course_exercises = #{courseExercises},</if>
+            <if test="coursePapers != null">course_papers = #{coursePapers},</if>
+        </trim>
+        where course_id = #{courseId}
+    </update>
+
+    <delete id="deleteTrCourseByCourseId" parameterType="Long">
+        delete from tr_course where course_id = #{courseId}
+    </delete>
+
+    <delete id="deleteTrCourseByCourseIds" parameterType="String">
+        delete from tr_course where course_id in 
+        <foreach item="courseId" collection="array" open="(" separator="," close=")">
+            #{courseId}
+        </foreach>
+    </delete>
+</mapper>

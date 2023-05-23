@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TrHrStandardMapper">
+    
+    <resultMap type="TrHrStandard" id="TrHrStandardResult">
+        <result property="standardId"    column="standard_id"    />
+        <result property="standardName"    column="standard_name"    />
+        <result property="standardDescription"    column="standard_description"    />
+        <result property="fileUrl"    column="file_url"    />
+    </resultMap>
+
+    <sql id="selectTrHrStandardVo">
+        select standard_id, standard_name, standard_description, file_url from tr_hr_standard
+    </sql>
+
+    <select id="selectTrHrStandardList" parameterType="TrHrStandard" resultMap="TrHrStandardResult">
+        <include refid="selectTrHrStandardVo"/>
+        <where>  
+            <if test="standardName != null  and standardName != ''"> and standard_name like concat('%', #{standardName}, '%')</if>
+            <if test="standardDescription != null  and standardDescription != ''"> and standard_description = #{standardDescription}</if>
+            <if test="fileUrl != null  and fileUrl != ''"> and file_url = #{fileUrl}</if>
+        </where>
+    </select>
+    
+    <select id="selectTrHrStandardByStandardId" parameterType="Long" resultMap="TrHrStandardResult">
+        <include refid="selectTrHrStandardVo"/>
+        where standard_id = #{standardId}
+    </select>
+        
+    <insert id="insertTrHrStandard" parameterType="TrHrStandard" useGeneratedKeys="true" keyProperty="standardId">
+        insert into tr_hr_standard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="standardName != null and standardName != ''">standard_name,</if>
+            <if test="standardDescription != null">standard_description,</if>
+            <if test="fileUrl != null and fileUrl != ''">file_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="standardName != null and standardName != ''">#{standardName},</if>
+            <if test="standardDescription != null">#{standardDescription},</if>
+            <if test="fileUrl != null and fileUrl != ''">#{fileUrl},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrHrStandard" parameterType="TrHrStandard">
+        update tr_hr_standard
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="standardName != null and standardName != ''">standard_name = #{standardName},</if>
+            <if test="standardDescription != null">standard_description = #{standardDescription},</if>
+            <if test="fileUrl != null and fileUrl != ''">file_url = #{fileUrl},</if>
+        </trim>
+        where standard_id = #{standardId}
+    </update>
+
+    <delete id="deleteTrHrStandardByStandardId" parameterType="Long">
+        delete from tr_hr_standard where standard_id = #{standardId}
+    </delete>
+
+    <delete id="deleteTrHrStandardByStandardIds" parameterType="String">
+        delete from tr_hr_standard where standard_id in 
+        <foreach item="standardId" collection="array" open="(" separator="," close=")">
+            #{standardId}
+        </foreach>
+    </delete>
+</mapper>

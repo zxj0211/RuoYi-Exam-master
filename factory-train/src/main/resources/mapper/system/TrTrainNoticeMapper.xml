@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TrTrainNoticeMapper">
+
+    <resultMap type="TrTrainNotice" id="TrTrainNoticeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="content"    column="content"    />
+        <result property="time"    column="time"    />
+        <result property="user"    column="user"    />
+        <result property="img"    column="img"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectTrTrainNoticeVo">
+        select id, name, content, time, user, img, type from tr_train_notice
+    </sql>
+
+    <select id="selectTrTrainNoticeList" parameterType="TrTrainNotice" resultMap="TrTrainNoticeResult">
+        <include refid="selectTrTrainNoticeVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="time != null  and time != ''"> and time = #{time}</if>
+            <if test="user != null  and user != ''"> and user = #{user}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+
+    <select id="selectTrTrainNoticeById" parameterType="Long" resultMap="TrTrainNoticeResult">
+        <include refid="selectTrTrainNoticeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTrTrainNotice" parameterType="TrTrainNotice" useGeneratedKeys="true" keyProperty="id">
+        insert into tr_train_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="content != null">content,</if>
+            <if test="time != null">time,</if>
+            <if test="user != null">user,</if>
+            <if test="img != null">img,</if>
+            <if test="type != null">type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="content != null">#{content},</if>
+            <if test="time != null">#{time},</if>
+            <if test="user != null">#{user},</if>
+            <if test="img != null">#{img},</if>
+            <if test="type != null">#{type},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTrTrainNotice" parameterType="TrTrainNotice">
+        update tr_train_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="user != null">user = #{user},</if>
+            <if test="img != null">img = #{img},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTrTrainNoticeById" parameterType="Long">
+        delete from tr_train_notice where id = #{id}
+    </delete>
+
+    <delete id="deleteTrTrainNoticeByIds" parameterType="String">
+        delete from tr_train_notice where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

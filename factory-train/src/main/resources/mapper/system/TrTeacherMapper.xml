@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TrTeacherMapper">
+    
+    <resultMap type="TrTeacher" id="TrTeacherResult">
+        <result property="teacherId"    column="teacher_id"    />
+        <result property="teacherName"    column="teacher_name"    />
+        <result property="teacherDescription"    column="teacher_description"    />
+        <result property="workYears"    column="work_years"    />
+        <result property="phone"    column="phone"    />
+        <result property="majorField"    column="major_field"    />
+        <result property="level"    column="level"    />
+        <result property="features"    column="features"    />
+    </resultMap>
+
+    <sql id="selectTrTeacherVo">
+        select teacher_id, teacher_name, teacher_description, work_years, phone, major_field, level, features from tr_teacher
+    </sql>
+
+    <select id="selectTrTeacherList" parameterType="TrTeacher" resultMap="TrTeacherResult">
+        <include refid="selectTrTeacherVo"/>
+        <where>  
+            <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
+            <if test="teacherDescription != null  and teacherDescription != ''"> and teacher_description = #{teacherDescription}</if>
+            <if test="workYears != null "> and work_years = #{workYears}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="majorField != null  and majorField != ''"> and major_field = #{majorField}</if>
+            <if test="level != null  and level != ''"> and level = #{level}</if>
+            <if test="features != null  and features != ''"> and features = #{features}</if>
+        </where>
+    </select>
+    
+    <select id="selectTrTeacherByTeacherId" parameterType="Long" resultMap="TrTeacherResult">
+        <include refid="selectTrTeacherVo"/>
+        where teacher_id = #{teacherId}
+    </select>
+        
+    <insert id="insertTrTeacher" parameterType="TrTeacher" useGeneratedKeys="true" keyProperty="teacherId">
+        insert into tr_teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">teacher_name,</if>
+            <if test="teacherDescription != null">teacher_description,</if>
+            <if test="workYears != null">work_years,</if>
+            <if test="phone != null">phone,</if>
+            <if test="majorField != null">major_field,</if>
+            <if test="level != null">level,</if>
+            <if test="features != null">features,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">#{teacherName},</if>
+            <if test="teacherDescription != null">#{teacherDescription},</if>
+            <if test="workYears != null">#{workYears},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="majorField != null">#{majorField},</if>
+            <if test="level != null">#{level},</if>
+            <if test="features != null">#{features},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrTeacher" parameterType="TrTeacher">
+        update tr_teacher
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">teacher_name = #{teacherName},</if>
+            <if test="teacherDescription != null">teacher_description = #{teacherDescription},</if>
+            <if test="workYears != null">work_years = #{workYears},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="majorField != null">major_field = #{majorField},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="features != null">features = #{features},</if>
+        </trim>
+        where teacher_id = #{teacherId}
+    </update>
+
+    <delete id="deleteTrTeacherByTeacherId" parameterType="Long">
+        delete from tr_teacher where teacher_id = #{teacherId}
+    </delete>
+
+    <delete id="deleteTrTeacherByTeacherIds" parameterType="String">
+        delete from tr_teacher where teacher_id in 
+        <foreach item="teacherId" collection="array" open="(" separator="," close=")">
+            #{teacherId}
+        </foreach>
+    </delete>
+</mapper>

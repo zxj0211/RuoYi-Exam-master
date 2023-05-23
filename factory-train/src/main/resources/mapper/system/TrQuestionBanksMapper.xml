@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TrQuestionBanksMapper">
+    
+    <resultMap type="TrQuestionBanks" id="TrQuestionBanksResult">
+        <result property="id"    column="id"    />
+        <result property="questionType"    column="question_type"    />
+        <result property="subjectrId"    column="subjectr_id"    />
+        <result property="score"    column="score"    />
+        <result property="gradeLevel"    column="grade_level"    />
+        <result property="difficult"    column="difficult"    />
+        <result property="correct"    column="correct"    />
+        <result property="infoTextrContentrId"    column="info_textr_contentr_id"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectTrQuestionBanksVo">
+        select id, question_type, subjectr_id, score, grade_level, difficult, correct, info_textr_contentr_id, create_user, status, create_time, deleted from tr_question_banks
+    </sql>
+
+    <select id="selectTrQuestionBanksList" parameterType="TrQuestionBanks" resultMap="TrQuestionBanksResult">
+        <include refid="selectTrQuestionBanksVo"/>
+        <where>  
+            <if test="questionType != null "> and question_type = #{questionType}</if>
+            <if test="subjectrId != null "> and subjectr_id = #{subjectrId}</if>
+            <if test="score != null "> and score = #{score}</if>
+            <if test="gradeLevel != null "> and grade_level = #{gradeLevel}</if>
+            <if test="difficult != null "> and difficult = #{difficult}</if>
+            <if test="correct != null  and correct != ''"> and correct = #{correct}</if>
+            <if test="infoTextrContentrId != null "> and info_textr_contentr_id = #{infoTextrContentrId}</if>
+            <if test="createUser != null "> and create_user = #{createUser}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectTrQuestionBanksById" parameterType="Long" resultMap="TrQuestionBanksResult">
+        <include refid="selectTrQuestionBanksVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTrQuestionBanks" parameterType="TrQuestionBanks" useGeneratedKeys="true" keyProperty="id">
+        insert into tr_question_banks
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionType != null">question_type,</if>
+            <if test="subjectrId != null">subjectr_id,</if>
+            <if test="score != null">score,</if>
+            <if test="gradeLevel != null">grade_level,</if>
+            <if test="difficult != null">difficult,</if>
+            <if test="correct != null">correct,</if>
+            <if test="infoTextrContentrId != null">info_textr_contentr_id,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="questionType != null">#{questionType},</if>
+            <if test="subjectrId != null">#{subjectrId},</if>
+            <if test="score != null">#{score},</if>
+            <if test="gradeLevel != null">#{gradeLevel},</if>
+            <if test="difficult != null">#{difficult},</if>
+            <if test="correct != null">#{correct},</if>
+            <if test="infoTextrContentrId != null">#{infoTextrContentrId},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrQuestionBanks" parameterType="TrQuestionBanks">
+        update tr_question_banks
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="questionType != null">question_type = #{questionType},</if>
+            <if test="subjectrId != null">subjectr_id = #{subjectrId},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="gradeLevel != null">grade_level = #{gradeLevel},</if>
+            <if test="difficult != null">difficult = #{difficult},</if>
+            <if test="correct != null">correct = #{correct},</if>
+            <if test="infoTextrContentrId != null">info_textr_contentr_id = #{infoTextrContentrId},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTrQuestionBanksById" parameterType="Long">
+        delete from tr_question_banks where id = #{id}
+    </delete>
+
+    <delete id="deleteTrQuestionBanksByIds" parameterType="String">
+        delete from tr_question_banks where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TrTrainingProjectMapper">
+
+    <resultMap type="TrTrainingProject" id="TrTrainingProjectResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="purpose"    column="purpose"    />
+        <result property="content"    column="content"    />
+        <result property="method"    column="method"    />
+        <result property="targetGroup"    column="target_group"    />
+        <result property="location"    column="location"    />
+        <result property="materials"    column="materials"    />
+        <result property="level"    column="level"    />
+    </resultMap>
+
+    <sql id="selectTrTrainingProjectVo">
+        select id, name, purpose, content, method, target_group, location, materials, level from tr_train_project_approval
+    </sql>
+
+    <select id="selectTrTrainingProjectList" parameterType="TrTrainingProject" resultMap="TrTrainingProjectResult">
+        <include refid="selectTrTrainingProjectVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="purpose != null  and purpose != ''"> and purpose = #{purpose}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="method != null  and method != ''"> and method = #{method}</if>
+            <if test="targetGroup != null  and targetGroup != ''"> and target_group = #{targetGroup}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="materials != null  and materials != ''"> and materials = #{materials}</if>
+            <if test="level != null  and level != ''"> and level = #{level}</if>
+        </where>
+    </select>
+
+    <select id="selectTrTrainingProjectById" parameterType="Long" resultMap="TrTrainingProjectResult">
+        <include refid="selectTrTrainingProjectVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTrTrainingProject" parameterType="TrTrainingProject">
+        insert into tr_train_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="purpose != null">purpose,</if>
+            <if test="content != null">content,</if>
+            <if test="method != null">method,</if>
+            <if test="targetGroup != null">target_group,</if>
+            <if test="location != null">location,</if>
+            <if test="materials != null">materials,</if>
+            <if test="level != null">level,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="purpose != null">#{purpose},</if>
+            <if test="content != null">#{content},</if>
+            <if test="method != null">#{method},</if>
+            <if test="targetGroup != null">#{targetGroup},</if>
+            <if test="location != null">#{location},</if>
+            <if test="materials != null">#{materials},</if>
+            <if test="level != null">#{level},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrTrainingProject" parameterType="TrTrainingProject">
+        update tr_train_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="purpose != null">purpose = #{purpose},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="method != null">method = #{method},</if>
+            <if test="targetGroup != null">target_group = #{targetGroup},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="materials != null">materials = #{materials},</if>
+            <if test="level != null">level = #{level},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTrTrainingProjectById" parameterType="Long">
+        delete from tr_train_project_approval where id = #{id}
+    </delete>
+
+    <delete id="deleteTrTrainingProjectByIds" parameterType="String">
+        delete from tr_train_project_approval where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
